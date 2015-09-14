@@ -3,8 +3,8 @@
 template <class RandomAccessIterator>
 void insertion_sort(RandomAccessIterator first , RandomAccessIterator last) ;
 
-template <class RandomAccessIterator , class T>
-inline void __linear_insert(RandomAccessIterator first , RandomAccessIterator last , T*) ;
+template <class RandomAccessIterator>
+inline void __linear_insert(RandomAccessIterator first , RandomAccessIterator last) ;
 
 template <class RandomAccessIterator , class T>
 void __ungarded_linear_insert(RandomAccessIterator last , T value) ;
@@ -23,14 +23,14 @@ void insertion_sort(RandomAccessIterator first , RandomAccessIterator last)
     }
     for(RandomAccessIterator i = first + 1 ; i != last ; ++i)
     {
-        __linear_insert(first , i , value_type(first)) ;  
+        __linear_insert(first , i) ;  
     }
 }
 
-template <class RandomAccessIterator , class T>
-inline void __linear_insert(RandomAccessIterator first , RandomAccessIterator last , T*)
+template <class RandomAccessIterator>
+inline void __linear_insert(RandomAccessIterator first , RandomAccessIterator last)
 {
-    T value = *last ;
+    typename std::iterator_traits<RandomAccessIterator>::value_type value = *last ;
     if(value < *first)
     {
         // value should be at the first position
