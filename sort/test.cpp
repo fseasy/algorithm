@@ -1,35 +1,22 @@
 #include <iostream>
 #include <vector>
+#include "tools.h"
 #include "insertion_sort.h"
-
-template <class T , size_t N>
-constexpr size_t get_len(T (&)[N]) noexcept
-{
-    return N ;
-}
-
-template <typename RandomAccessIterator>
-inline void print(RandomAccessIterator first , RandomAccessIterator last)
-{
-    if(first == last) return ;
-    std::cout << *first  ;
-    ++first ;
-    while(first != last)
-    {
-        std::cout << " " << *first ;
-        ++first    ;
-    }
-    std::cout << std::endl ;
-}
-
+#include "quick_sort.h"
 
 int main()
 {
     std::vector<int> v = {2 , 4 , 1 , 9 , 10} ;
-    insertion_sort(v.begin() , v.end()) ;
-    print(v.begin() , v.end()) ;
-
     int nums[] = {2 , 4 , 1 , 9 , 10} ;
+    /**** insertion sort ****
+    insertion_sort(v.begin() , v.end()) ;
+
     insertion_sort(std::begin(nums) , std::end(nums)) ;
+    ****/
+    
+    quick_sort_v_base(v.begin() , v.end()) ;
+    quick_sort_v_base(std::begin(nums) , std::end(nums)) ;
+
+    print(v.begin() , v.end()) ;
     print(std::begin(nums) , std::end(nums)) ;
 }

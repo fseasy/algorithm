@@ -1,4 +1,3 @@
-#include <type_traits>
 
 template <class RandomAccessIterator>
 void insertion_sort(RandomAccessIterator first , RandomAccessIterator last) ;
