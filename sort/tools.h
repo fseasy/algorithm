@@ -19,7 +19,9 @@ bool fill_array_with_static_random_numbers(int A[] , int size , int low=1 , int 
     for(size_t i = 0 ; i < size ; ++i)
     {
         int rand_tmp = rand() % range ;
-    } 
+        A[i] = rand_tmp + low ;
+    }
+    return true ;
 }
 
 template <class T , size_t N>
@@ -42,4 +44,15 @@ inline void print(RandomAccessIterator first , RandomAccessIterator last)
     std::cout << std::endl ;
 }
 
+template <typename RandomAccessIterator>
+inline bool is_increasing(RandomAccessIterator first , RandomAccessIterator last)
+{
+    if(first == last) return false ;
+    while(first != (last -1) )
+    {
+        if( *(first + 1 ) < *first ) return false ;
+        ++first ;
+    }
+    return true ;
+}
 #endif

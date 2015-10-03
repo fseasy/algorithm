@@ -6,8 +6,10 @@
 
 int main()
 {
-    std::vector<int> v = {2 , 4 , 1 , 9 , 10} ;
-    int nums[] = {2 , 4 , 1 , 9 , 10} ;
+    const int ARRAY_SIZE = 10000 ;
+    int nums[ARRAY_SIZE] ;
+    fill_array_with_static_random_numbers(nums , ARRAY_SIZE , 1 , 10000) ;
+    std::vector<int> v(std::begin(nums) , std::end(nums)) ;
     /**** insertion sort ****
     insertion_sort(v.begin() , v.end()) ;
 
@@ -17,6 +19,14 @@ int main()
     quick_sort_v_base(v.begin() , v.end()) ;
     quick_sort_v_base(std::begin(nums) , std::end(nums)) ;
 
+    /**
     print(v.begin() , v.end()) ;
     print(std::begin(nums) , std::end(nums)) ;
+    **/
+    if(is_increasing(v.begin() , v.end())) std::cout << "vector sorted ok !" ;
+    else std::cout << "vector sorted wrong !" ;
+    std::cout << std::endl ;
+    if(is_increasing(std::begin(nums) , std::end(nums))) std::cout << "array sorted ok !" ;
+    else std::cout << "array sorted wrong !" ;
+    std::cout << std::endl ;
 }
