@@ -16,9 +16,13 @@ int main()
     insertion_sort(std::begin(nums) , std::end(nums)) ;
     ****/
     
+    /**** quick sort base version     
     quick_sort_v_base(v.begin() , v.end()) ;
     quick_sort_v_base(std::begin(nums) , std::end(nums)) ;
-
+    ****/
+    quick_sort_2pointer_swap(v.begin() , v.end()) ;
+    quick_sort_2pointer_swap(std::begin(nums) , std::end(nums)) ;
+    
     /**
     print(v.begin() , v.end()) ;
     print(std::begin(nums) , std::end(nums)) ;
