@@ -60,12 +60,15 @@ bool normal_linear_generate_prime(int N , std::vector<int> & rst)
     std::memset(candidate_nums_is_prime , true , sizeof(bool) * N) ; 
     candidate_nums_is_prime[0] = false ;
     candidate_nums_is_prime[1] = false ;
+    int sqrt_value = sqrt(N) ;
     for(int i = 2 ; i < N ; ++i)
     {
         // prime num is not filtered
         if(candidate_nums_is_prime[i]) tmp_rst.push_back(i) ;
         // filter
-        for(int j = i*i ; j < N ; j += i)
+        if(i > sqrt_value + 1 ) continue ; // !! Attention ! If no this statements , the below i*i operation may be overflow !! 
+                                           // ~~ which will cause wrong result !  
+        for(size_t j = i*i ; j < N ; j += i)
         {
             candidate_nums_is_prime[j] = false ;
         }
@@ -102,7 +105,7 @@ bool fast_linear_generate_prime(int N , std::vector<int> &rst)
             tmp_rst.push_back(i) ;
             ++prime_cnt ;
         }
-        for(int j = 0 ; j < prime_cnt ; ++j)
+        for(size_t j = 0 ; j < prime_cnt ; ++j)
         {
             int prime_factor = tmp_rst[j] ;
             int num_to_filter = i * prime_factor ;
