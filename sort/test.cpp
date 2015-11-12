@@ -3,12 +3,13 @@
 #include "tools.h"
 #include "insertion_sort.h"
 #include "quick_sort.h"
+#include "merge_sort.h"
 
 int main()
 {
-    const int ARRAY_SIZE = 10000 ;
+    const int ARRAY_SIZE = 0xFFFF ;
     int nums[ARRAY_SIZE] ;
-    fill_array_with_static_random_numbers(nums , ARRAY_SIZE , 1 , 10000) ;
+    fill_array_with_static_random_numbers(nums , ARRAY_SIZE , 1 , 0xFFFF) ;
     std::vector<int> v(std::begin(nums) , std::end(nums)) ;
     /**** insertion sort ****
     insertion_sort(v.begin() , v.end()) ;
@@ -20,13 +21,19 @@ int main()
     quick_sort_v_base(v.begin() , v.end()) ;
     quick_sort_v_base(std::begin(nums) , std::end(nums)) ;
     ****/
+    
+    /**** quick sort 2 pointer swap version
     quick_sort_2pointer_swap(v.begin() , v.end()) ;
     quick_sort_2pointer_swap(std::begin(nums) , std::end(nums)) ;
+    ****/
+
+    quick_sort_v_base(v.begin() , v.end()) ;
+    merge_sort(std::begin(nums) , std::end(nums)) ;
     
-    /**
+    /****
     print(v.begin() , v.end()) ;
     print(std::begin(nums) , std::end(nums)) ;
-    **/
+    ****/
     if(is_increasing(v.begin() , v.end())) std::cout << "vector sorted ok !" ;
     else std::cout << "vector sorted wrong !" ;
     std::cout << std::endl ;

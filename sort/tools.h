@@ -15,7 +15,7 @@ bool fill_array_with_static_random_numbers(int A[] , int size , int low=1 , int 
 {
     int range = heigh - low ;
     if(range <= 0) return false ;
-    srand(999) ; // if we use a static number , it will get  a static random number sequence ! 
+    //srand(999) ; // if we use a static number , it will get  a static random number sequence ! 
     for(size_t i = 0 ; i < size ; ++i)
     {
         int rand_tmp = rand() % range ;
@@ -54,5 +54,13 @@ inline bool is_increasing(RandomAccessIterator first , RandomAccessIterator last
         ++first ;
     }
     return true ;
+}
+
+template <class RandomAccessIterator1 , class RandomAccessIterator2>
+inline RandomAccessIterator2 __copy_backward(RandomAccessIterator1 first , RandomAccessIterator1 last , 
+                                             RandomAccessIterator2 result)
+{
+    while(last != first) *--result = *--last ;
+    return result ;
 }
 #endif

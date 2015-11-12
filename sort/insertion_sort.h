@@ -1,4 +1,4 @@
-
+#include "tools.h"
 template <class RandomAccessIterator>
 void insertion_sort(RandomAccessIterator first , RandomAccessIterator last) ;
 
@@ -7,10 +7,6 @@ inline void __linear_insert(RandomAccessIterator first , RandomAccessIterator la
 
 template <class RandomAccessIterator , class T>
 void __ungarded_linear_insert(RandomAccessIterator last , T value) ;
-
-template <class RandomAccessIterator1 , class RandomAccessIterator2>
-inline RandomAccessIterator2 __copy_backward(RandomAccessIterator1 first , RandomAccessIterator1 last , 
-                                             RandomAccessIterator2 result) ;
 
 template <class RandomAccessIterator>
 void insertion_sort(RandomAccessIterator first , RandomAccessIterator last)
@@ -58,12 +54,4 @@ void __ungarded_linear_insert(RandomAccessIterator last , T value)
     }
     // finded !
     *last = value ;
-}
-
-template <class RandomAccessIterator1 , class RandomAccessIterator2>
-inline RandomAccessIterator2 __copy_backward(RandomAccessIterator1 first , RandomAccessIterator1 last , 
-                                             RandomAccessIterator2 result)
-{
-    while(last != first) *--result = *--last ;
-    return result ;
 }
