@@ -5,6 +5,7 @@
 #include <ctime>
 #include <vector>
 #include "point.h"
+
 using namespace std ;
 using namespace conhul ;
 
@@ -13,7 +14,7 @@ const time_t G_RANDOM_SEED = time(0) ;
 
 void generate_pnts(int num_pnts , int pnt_x_max , int pnt_y_max , vector<Point*> & pnts ,bool is_static_random=false)
 {
-    if(is_static_random) srand(G_RANDOM_SEED) ;
+    if(!is_static_random) srand(G_RANDOM_SEED) ;
     else srand(G_STATIC_SEED) ;
     for(int i = 0 ; i <num_pnts ; ++i)
     {

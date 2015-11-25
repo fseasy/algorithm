@@ -2,30 +2,40 @@
 #define CONVEX_HULL_BRUTEFORCE_INCLUDED_H
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 #include "point.h"
 
 using namespace std ;
 
 namespace conhul{
 
+bool is_in_same_side(Point *line_p_1 , Point *line_p_2 , Point *test_p_1 , Point *test_p_2) ;
+
 void find_convex_hull_brute_force(const vector<Point *> &pnts , vector<Point *> & conhul_pnts)
 {
     vector<bool> convex_hull_status(pnts.size() , true) ;  
     for(vector<Point *>::const_iterator iA = pnts.begin() ; iA != pnts.end() ; ++iA)
     {
+        if(convex_hull_status[iA - pnts.begin()] == false ) continue ;
         for(vector<Point*>::const_iterator iB = pnts.begin() ; iB != pnts.end() ; ++iB)
         {
             if(iB == iA) continue ;
+            if(convex_hull_status[iB - pnts.begin()] == false) continue ;
             for(vector<Point*>::const_iterator iC = pnts.begin() ; iC != pnts.end() ; ++iC)
             {
                 if(iC == iA || iC == iB) continue ;
+                if(convex_hull_status[iC - pnts.begin()] == false) continue ;
                 for(size_t test_idx = 0 ; test_idx < pnts.size()  ; ++test_idx)
                 {
-                    if(iTest == iA || iTest == iB || iTest == iC) continue ;
                     if(convex_hull_status[test_idx] == false) continue ;
                     vector<Point*>::const_iterator iTest = pnts.begin() + test_idx ;
-                    if( ! is_in_same_side(*iA , *iB , *iC , *iTest) || ! is_in_same_side(*iA , *iC , *iB , *iTest) 
-                       || ! is_in_same_side(*iB , *iC , *iA , *iTest)) convex_hull_status[test_idx] = false ; 
+                    if(iTest == iA || iTest == iB || iTest == iC) continue ;
+                    if( is_in_same_side(*iA , *iB , *iC , *iTest) && is_in_same_side(*iA , *iC , *iB , *iTest) 
+                       && is_in_same_side(*iB , *iC , *iA , *iTest))
+                    {
+                        // Test point is in the range of the triangle of ABC , so it is not the convex hull !
+                        convex_hull_status[test_idx] = false ; 
+                    }
                 }
 
             }
@@ -60,15 +70,20 @@ bool is_in_same_side(Point *line_p_1 , Point *line_p_2 , Point *test_p_1 , Point
      * point to line's distance , we can just using `functional margin` to representation !
      * That is : y = W * X + b , y is the functional margin . positive for the direction of normal vector(法向量) , negative for against
      * if y_1 * y_2 is a positive value , the test points are in the same side ; else on each side
+     * Addtion !  using normalize to avoid overflow !
      **/
     // get line formula
     int w_1 , w_2 ;
-    w_1 = - (line_p_2->y - line_p_1->y) ;
+    w_1 = - (line_p_1->y - line_p_2->y) ;
     w_2 = line_p_1->x - line_p_2->x ;
-    b = - ( w_1 * line_p_1->x + w_2 * line_p_1-> y ) ;
+    float norm_factor = max(abs(w_1) , abs(w_2)) ;
+    float norm_w_1 = w_1 / norm_factor ,
+          norm_w_2 = w_2 / norm_factor ;
+    float b = - ( norm_w_1 * line_p_1->x + norm_w_2 * line_p_1-> y ) ;
     // get functional margin
-    y_1 = w_1 * test_p_1->x + w_2 * test_p_1->y + b ;
-    y_2 = w_1 * test_p_2->x + w_2 * test_p_2->y + b ;
+    float y_1 , y_2 ;
+    y_1 = norm_w_1 * test_p_1->x + norm_w_2 * test_p_1->y + b ;
+    y_2 = norm_w_1 * test_p_2->x + norm_w_2 * test_p_2->y + b ;
     // decide by the sign of product y_1 and y_2
     return ( y_1*y_2 >= 0 ) ? true : false ;
 }
