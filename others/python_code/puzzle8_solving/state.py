@@ -1,6 +1,6 @@
 #coding=utf8
 import copy
-
+import logging
 import config
 
 class Puzzle8State(object) :
@@ -52,8 +52,8 @@ class Puzzle8State(object) :
         '''
         f(x) = g(x) + h*(x)
         '''
-        #self.total_cost = self.having_cost + self._predict_score2target_state(target)
-        self.total_cost = self._predict_score2target_state(target)
+        self.total_cost = self.having_cost +  self.having_cost << self._predict_score2target_state(target)
+        #self.total_cost = self._predict_score2target_state(target)
     
     def add_previous_state2history(self , pre_state) :
         self.history_states.append(pre_state)
@@ -85,7 +85,19 @@ class Puzzle8State(object) :
         state.history_states = copy.copy(self.history_states)
         state.add_previous_state2history(self)
         return state
-
+    
+    def _clear_redundant_state(self , states) :
+        no_redundant_states_lst = []
+        for state in states :
+            is_redundant = False 
+            for history_state in state.history_states :
+                if state._predict_score2target_state(history_state) == 0 :
+                    is_redundant = True
+                    break
+            if not is_redundant :
+                no_redundant_states_lst.append(state)
+        return no_redundant_states_lst
+    
     def expand_states(self) :
         states_lst = []
         ## clearly ! blank_row , blank_col count from 1 ! 
@@ -101,7 +113,8 @@ class Puzzle8State(object) :
         # to right
         if self.blank_col < 3 :
             states_lst.append(self._build_expand_state(Puzzle8State.EXPAND_RIGHT))
-        return states_lst
+        no_redundant_states = self._clear_redundant_state(states_lst)
+        return no_redundant_states
 
     def __str__(self) :
         node_str_lst = [ str(node) if node != config.BLANK else " " 

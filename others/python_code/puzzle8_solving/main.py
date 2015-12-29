@@ -1,14 +1,14 @@
 #coding=utf8
 
-import Queue
 import logging
+from minheap import MinHeap
 from state import Puzzle8State
 
 logging.basicConfig(level=logging.INFO)
 
 def a_star_search(init_state , target_state) :
-    heap = Queue.PriorityQueue()
-    heap.put(init_state)
+    heap = MinHeap()
+    heap.push(init_state)
     print '++++++++++++++'
     cnt = 0
     while True :
@@ -16,18 +16,19 @@ def a_star_search(init_state , target_state) :
             logging.info("Heap has been Empty . Stop")
             break
         cnt += 1
-        cur_state = heap.get()
+        cur_state = heap.pop()
         if cur_state.is_same2other_state(target_state) :
             logging.info("Get solving .")
+            print cur_state
+            print cnt
             break
         states_lst = cur_state.expand_states()
         for state in states_lst : 
             state.set_cost4a_star(target_state)
-            heap.put(state)
-            #print state
-            #print state._predict_score2target_state(target_state)
-        if cnt%100 == 0 :
-            print heap.qsize()
+            if not heap.has_same(state) :
+                heap.push(state)
+        if cnt%1000 == 0 :
+            print heap.size()
             print cur_state
 def main() :
     init_puzzle_data_1d = [2,3,5,1,4,6,8,7]
