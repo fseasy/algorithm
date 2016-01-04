@@ -21,11 +21,12 @@ def a_star_search(init_state , target_state) :
             logging.info("Get solving .")
             print cur_state
             print cnt
+            cur_state.print_history()
             break
         states_lst = cur_state.expand_states()
         for state in states_lst : 
             state.set_cost4a_star(target_state)
-            if not heap.has_same(state) :
+            if not heap.has_same(state , Puzzle8State.is_2puzzle_same) :
                 heap.push(state)
         if cnt%1000 == 0 :
             print heap.size()

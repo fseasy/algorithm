@@ -15,10 +15,10 @@ class MinHeap(object) :
     def empty(self) :
         return self.__len__() == 0
 
-    def has_same(self , checking_item , cmp_func=cmp) :
+    def has_same(self , checking_item , check_same_func=cmp) :
         same_ele = None 
         for ele in self.data :
-            if cmp_func(checking_item , ele) == 0 :
+            if check_same_func(checking_item , ele) == True :
                 same_ele = ele
                 break
         return True if same_ele is not None else  False

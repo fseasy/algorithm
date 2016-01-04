@@ -8,11 +8,17 @@ class Puzzle8State(object) :
     EXPAND_DOWN = 1
     EXPAND_LEFT = 2
     EXPAND_RIGHT = 3
+    
+    @classmethod
+    def is_2puzzle_same(cls , state1 , state2) :
+        return state1._predict_score2target_state(state2) == 0
+
     def __init__(self) :
         self.puzzle_data = None
         self.blank_row = 0 # it count from 1 , not 0 ! because it is an interface to outer .
         self.blank_col = 0
         self.history_states = []
+        self.history_expand_actions = []
         self.having_cost = 0 # the cost from root to current , g(x)
         self.total_cost = 0 # g(x) + h*(x)
 
@@ -42,7 +48,7 @@ class Puzzle8State(object) :
     def _predict_score2target_state(self , target) :
         '''
         h*(x)
-        target : Puzzle2State , target puzzle state 
+        target : Puzzle8State , target puzzle state 
         '''
         equals_rst = [ 1 if self.puzzle_data[row][col] != target.puzzle_data[row][col] else 0 
                        for row in range(3) for col in range(3) ]
@@ -52,8 +58,9 @@ class Puzzle8State(object) :
         '''
         f(x) = g(x) + h*(x)
         '''
-        self.total_cost = self.having_cost +  self.having_cost << self._predict_score2target_state(target)
+        #self.total_cost = self.having_cost +  self.having_cost << self._predict_score2target_state(target)
         #self.total_cost = self._predict_score2target_state(target)
+        self.total_cost = self.having_cost +  self._predict_score2target_state(target)
     
     def add_previous_state2history(self , pre_state) :
         self.history_states.append(pre_state)
@@ -83,7 +90,9 @@ class Puzzle8State(object) :
         state.puzzle_data[state.blank_row-1][state.blank_col-1] , state.puzzle_data[self.blank_row-1][self.blank_col-1] = (
                 state.puzzle_data[self.blank_row-1][self.blank_col-1] , state.puzzle_data[state.blank_row-1][state.blank_col-1] )
         state.history_states = copy.copy(self.history_states)
+        state.history_expand_actions = copy.copy(self.history_expand_actions)
         state.add_previous_state2history(self)
+        state.history_expand_actions.append(expand_type)
         return state
     
     def _clear_redundant_state(self , states) :
@@ -115,6 +124,18 @@ class Puzzle8State(object) :
             states_lst.append(self._build_expand_state(Puzzle8State.EXPAND_RIGHT))
         no_redundant_states = self._clear_redundant_state(states_lst)
         return no_redundant_states
+    
+    def print_history(self) :
+        cnt = 1
+        split_line = "-"*10
+        act2words = {Puzzle8State.EXPAND_UP : "空格向上" , Puzzle8State.EXPAND_DOWN : "空格向下" , 
+                     Puzzle8State.EXPAND_LEFT : "空格向左" , Puzzle8State.EXPAND_RIGHT : "空格向右"}
+        for his_act , his_state in zip(self.history_expand_actions , self.history_states) :
+            print "{split_line}{cnt}{split_line}".format(**locals())
+            print  act2words.get(his_act , "未知")
+            print his_state.__str__()
+            cnt += 1
+
 
     def __str__(self) :
         node_str_lst = [ str(node) if node != config.BLANK else " " 
