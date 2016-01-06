@@ -13,24 +13,18 @@ def a_star_search(init_state , target_state) :
     cnt = 0
     while True :
         if heap.empty() :
-            logging.info("Heap has been Empty . Stop")
-            break
+            return None
         cnt += 1
         cur_state = heap.pop()
         if cur_state.is_same2other_state(target_state) :
-            logging.info("Get solving .")
-            print cur_state
-            print cnt
-            cur_state.print_history()
-            break
+            return cur_state
         states_lst = cur_state.expand_states()
         for state in states_lst : 
             state.set_cost4a_star(target_state)
             if not heap.has_same(state , Puzzle8State.is_2puzzle_same) :
                 heap.push(state)
         if cnt%1000 == 0 :
-            print heap.size()
-            print cur_state
+            print "state {0} has been searched , currently heap has {1} states .".format(cnt , heap.size())
 def main() :
     init_puzzle_data_1d = [2,3,5,1,4,6,8,7]
     init_blank_row = 1
@@ -47,7 +41,12 @@ def main() :
     print init_state
     print target_state
     print init_state._predict_score2target_state(target_state)
-    a_star_search(init_state , target_state)
+    search_result = a_star_search(init_state , target_state)
+    if search_result :
+        print "Solving is found"
+        search_result.print_history()
+    else :
+        print "No Solving is found"
 
 if __name__ == "__main__" :
     main() 

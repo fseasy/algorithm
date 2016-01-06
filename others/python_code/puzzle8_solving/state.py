@@ -1,8 +1,10 @@
 #coding=utf8
 import copy
 import logging
+import functools
 import config
 
+@functools.total_ordering
 class Puzzle8State(object) :
     EXPAND_UP = 0
     EXPAND_DOWN = 1
@@ -126,15 +128,22 @@ class Puzzle8State(object) :
         return no_redundant_states
     
     def print_history(self) :
-        cnt = 1
+        ## history_states and history_expand_actions has some different !
+        ## history_states[0] is the init state ! but history_expand_actions[0] is the first action !
+        ## history_states didn't including the current state , but history_expand_actions has the last action .
+        ## so actions have been done to fix it ! 
+        cnt = 0
         split_line = "-"*10
         act2words = {Puzzle8State.EXPAND_UP : "空格向上" , Puzzle8State.EXPAND_DOWN : "空格向下" , 
                      Puzzle8State.EXPAND_LEFT : "空格向左" , Puzzle8State.EXPAND_RIGHT : "空格向右"}
-        for his_act , his_state in zip(self.history_expand_actions , self.history_states) :
-            print "{split_line}{cnt}{split_line}".format(**locals())
-            print  act2words.get(his_act , "未知")
-            print his_state.__str__()
+        print "{split_line}{cnt}{split_line}".format(**locals())
+        print "初始状态"
+        print self.history_states[0]
+        for his_act , his_state in zip(self.history_expand_actions , self.history_states[1:] + [ self ,]) :
             cnt += 1
+            print "{split_line}{cnt}{split_line}".format(**locals())
+            print act2words.get(his_act , "未知")
+            print his_state.__str__()
 
 
     def __str__(self) :
@@ -150,3 +159,14 @@ class Puzzle8State(object) :
         Smaller is in front 
         '''
         return cmp(self.total_cost , other_state.total_cost)
+    
+    def __lt__(self , other_state) :
+        '''
+        in outer , we use heapq to keep the search ordering desc by f(n)
+        In heapq , using `__lt__` to compare the elements , so `__lt__` is needed .
+        we using `functools.total_ordering` , so just define `__lt__`  and `__eq__` , all rich comparing is defined !
+        '''
+        return self.total_cost < other_state.total_cost
+    
+    def __eq__(self , other_state) :
+        return self.total_cost == other_state.total_cost
