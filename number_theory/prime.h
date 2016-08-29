@@ -63,8 +63,8 @@ bool normal_linear_generate_prime(int N , std::vector<int> & rst)
     int sqrt_value = sqrt(N) ;
     for(int i = 2 ; i < N ; ++i)
     {
-        // prime num is not filtered
-        if(candidate_nums_is_prime[i]) tmp_rst.push_back(i) ;
+        if(!candidate_nums_is_prime[i]){ continue; } // skip when not a prime number
+        tmp_rst.push_back(i);
         // filter
         if(i > sqrt_value + 1 ) continue ; // !! Attention ! If no this statements , the below i*i operation may be overflow !! 
                                            // ~~ which will cause wrong result !  

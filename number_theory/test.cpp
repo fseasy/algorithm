@@ -20,6 +20,7 @@ int main(int argc , char * argv[])
     //    else std::cout << "prime check failed" ;
     //    std::cout << std::endl ; 
     //}
-    std::cout << prime_nums.size() ;
+    std::cout << prime_nums.size() << " ";
+    std::cout << prime_nums.back() ;
     std::cout << std::endl ;
 }
