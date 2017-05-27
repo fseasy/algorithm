@@ -7,3 +7,10 @@
 1. 基于HashMap
 
 2. 基于Trie树
+
+## 标准算法
+
+
+http://blog.csdn.net/beta2/article/details/5698171
+
+> 我都忘了我曾经知道多模式匹配！我有些怀疑自己对于算法的重视程度了。
