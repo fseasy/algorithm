@@ -11,6 +11,9 @@ class LCS {
 public:
 	static int naive_lcs(const std::string& s1, const std::string& s2);
 	static int lcs(const std::string& s1, const std::string& s2);
+    template<typename BidirectionalIt1, typename BidirectionalIt2>
+    static int lcs(BidirectionalIt1 s1_first, BidirectionalIt1 s1_last,
+                   BidirectionalIt2 s2_first, BidirectionalIt2 s2_last);
 private:
     static int naive_lcs_impl(const std::string::const_iterator& s1_beg,
                               const std::string::const_iterator& s1_end,
@@ -19,14 +22,13 @@ private:
 
 };
 
-inline
-int LCS::naive_lcs(const std::string &s1, const std::string &s2) {
-    return naive_lcs_impl(s1.cbegin(), s1.cend(), s2.cbegin(), s2.cend());
-}
-
 
 } // end of namespace string
 } // end of namespace algorithm impl
+
+// inline / template impl
+
+#include "lcs_inline_impl.hpp"
 
 
 #endif

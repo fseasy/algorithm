@@ -24,10 +24,12 @@ void test(){
         const string& s2 = std::get<1>(str_pair);
         int naive_result = LCS::naive_lcs(s1, s2);
         int dp_result = LCS::lcs(s1, s2);
-        if (naive_result != dp_result) {
+        int dp_iter_result = LCS::lcs(s1.begin(), s1.end(), s2.begin(), s2.end());
+        if (naive_result != dp_result || naive_result != dp_iter_result) {
             std::cout << s1 << "\n" << s2 << "\n"
                       << "naive lcs = " << naive_result << "\n"
-                      << "dp lcs = " << dp_result << "\n";
+                      << "dp lcs = " << dp_result << "\n"
+                      << "dp iter lcs = " << dp_iter_result << "\n";
             exit(1);
         }
     }
