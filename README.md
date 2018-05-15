@@ -1,12 +1,21 @@
 # Algorithm Doing
-implementation for some algorithm
+
+implementation for some algorithms.
 
 1. sort
     
-    insertion sort
+    a. insertion sort
 
-    quick sort
+    b. quick sort
 
 2. number\_theory
 
-    prime number
+    a. prime number
+
+3. others
+
+    a. convex_hull
+
+    b. puzzle8_solving
+
+    c. union_find
